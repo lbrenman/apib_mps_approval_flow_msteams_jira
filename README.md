@@ -2,7 +2,7 @@
 
 This API Builder project implements the steps described [**here**](https://docs.axway.com/bundle/amplify-central/page/docs/integrate_with_central/webhook/marketplace_subscription_webhook/index.html) to approve Axway Marketplace subscription approval requests. It leverages Jira to present an approval form to the approver:
 
-![](https://i.imgur.com/5QABWr5.png)
+![](https://i.imgur.com/1Yc098u.png)
 
 Note that custom fields are added to Jira to aid in the approval process:
 
@@ -11,7 +11,9 @@ Note that custom fields are added to Jira to aid in the approval process:
 * subscription name (for internal use)
 * subscription link (for internal use)
 
-and MS Teams to notify the approval team:
+Note that we are creating an incident of type "Demand". This is a custom type for demonstration purposes.
+
+We also leverage MS Teams to notify the approval team:
 
 ![](https://i.imgur.com/nZD5CKd.png)
 
