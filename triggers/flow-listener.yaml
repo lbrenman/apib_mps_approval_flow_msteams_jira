@@ -21,3 +21,14 @@ triggers:
         request: $.request
         config: $.config
         env: $.env
+  flow-listener-3:
+    name: getJiraFields
+    parameters:
+      id: getJiraFields
+    enabled: true
+    invoke:
+      flow: getJiraFields
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env

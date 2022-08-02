@@ -19,7 +19,7 @@
 		},
 		"additionalProperties": false
 	},
-	"start": "javascript.1",
+	"start": "invoke-flow.4",
 	"nodes": {
 		"javascript.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
@@ -36,7 +36,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"// customfield_10050 = Jira custom field 'Subscription Self Link'\\n  // customfield_10052 = Jira custom field 'Subscription Name'\\n  \\n  let isProject = data.request.body.issue.fields.project.key === data.env.JIRA_PROJECT_KEY;\\n  let isDone = data.request.body.issue.fields.status.name === 'Done';\\n  \\n  let self_link = data.env.JIRA_SUBS_SELF_LINK_FIELD;\\n  let approvalPicker= data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n\\n  //https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in\\n  let hasSelfLink = false;\\n  if (data.request.body.issue.fields[self_link]) {hasSelfLink = true;}\\n  \\n  let hasApprovalSatatus = false;\\n  if (data.request.body.issue.fields[approvalPicker]) {hasApprovalSatatus = true;}\\n  \\n  \\n  return isProject && isDone && hasSelfLink && hasApprovalSatatus;\"",
+					"value": "\"// customfield_10050 = Jira custom field 'Subscription Self Link'\\n  // customfield_10052 = Jira custom field 'Subscription Name'\\n  \\n  let isProject = data.request.body.issue.fields.project.key === data.env.JIRA_PROJECT_KEY;\\n  let isDone = data.request.body.issue.fields.status.name === 'Done';\\n  \\n  let self_link_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_SELF_LINK_FIELD_NAME).key;\\n  let app_picker_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_NAME_FIELD_NAME).key;\\n\\n  //https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in\\n  let hasSelfLink = false;\\n  if (data.request.body.issue.fields[self_link_fieldname]) {hasSelfLink = true;}\\n  \\n  let hasApprovalSatatus = false;\\n  if (data.request.body.issue.fields[app_picker_fieldname]) {hasApprovalSatatus = true;}\\n  \\n  \\n  return isProject && isDone && hasSelfLink && hasApprovalSatatus;\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
@@ -108,7 +108,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let self_link = data.env.JIRA_SUBS_SELF_LINK_FIELD;\\n  let approval_comment = data.env.JIRA_SUBS_APP_COMMENT_FIELD;\\n  \\n  let url = data.request.body.issue.fields[self_link];\\n  \\n  let approvalStatus = 'rejected';\\n  \\n  let approvalPicker= data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  if(data.request.body.issue.fields[approvalPicker].value === 'Approve') {\\n     approvalStatus = 'approved';\\n  }\\n  \\n   let body = {\\n      \\\"approval\\\": {\\n      \\\"state\\\": approvalStatus,\\n      \\\"reason\\\": data.request.body.issue.fields[approval_comment]\\n      }\\n   };\\n   return {url,body};\""
+					"value": "\"let self_link_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_SELF_LINK_FIELD_NAME).key;\\n  let app_comment_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_APP_COMMENT_FIELD_NAME).key;\\n  let app_picker_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_APP_PICKER_FIELD_NAME).key;\\n  \\n  let url = data.request.body.issue.fields[self_link_fieldname];\\n  \\n  let approvalStatus = 'rejected';\\n  \\n \\n  if(data.request.body.issue.fields[app_picker_fieldname].value === 'Approve') {\\n     approvalStatus = 'approved';\\n  }\\n  \\n   let body = {\\n      \\\"approval\\\": {\\n      \\\"state\\\": approvalStatus,\\n      \\\"reason\\\": data.request.body.issue.fields[app_comment_fieldname]\\n      }\\n   };\\n   return {url,body};\""
 				}
 			],
 			"outputs": {
@@ -222,7 +222,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let url=data.env.MS_TEAMS_WEBHOOK_URL;\\n  \\n  let subs_name = data.env.JIRA_SUBS_NAME_FIELD;\\n  let subs_approval_picker = data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  let body = {\\n    text: 'Subscription \\\"'+data.request.body.issue.fields[subs_name]+'\\\" set to '+data.request.body.issue.fields[subs_approval_picker].value+' by '+data.request.body.user.displayName+' in Jira'\\n  };\\n  \\n  return {url,body};\"",
+					"value": "\"let url=data.env.MS_TEAMS_WEBHOOK_URL;\\n  \\n  let subs_name_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_NAME_FIELD_NAME).key;\\n  let app_picker_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_APP_PICKER_FIELD_NAME).key;\\n  \\n  let body = {\\n    text: 'Subscription \\\"'+data.request.body.issue.fields[subs_name_fieldname]+'\\\" set to '+data.request.body.issue.fields[app_picker_fieldname].value+' by '+data.request.body.user.displayName+' in Jira'\\n  };\\n  \\n  return {url,body};\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
@@ -309,7 +309,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let url = data.env.JIRA_URL+'/rest/api/2/issue/'+data.request.body.issue.key+'/comment';\\n  \\n  let subs_name = data.env.JIRA_SUBS_NAME_FIELD;\\n  let subs_approval_picker = data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  let body = {\\n    body: 'Subscription \\\"'+data.request.body.issue.fields[subs_name]+'\\\" set to '+data.request.body.issue.fields[subs_approval_picker].value+' by '+data.request.body.user.displayName+' in Jira and the subscription approval workflow'\\n  };\\n  \\n  return {url, body};\"",
+					"value": "\"let url = data.env.JIRA_URL+'/rest/api/2/issue/'+data.request.body.issue.key+'/comment';\\n  \\n  let subs_name_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_NAME_FIELD_NAME).key;\\n  let app_picker_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_APP_PICKER_FIELD_NAME).key;\\n  \\n  let body = {\\n    body: 'Subscription \\\"'+data.request.body.issue.fields[subs_name_fieldname]+'\\\" set to '+data.request.body.issue.fields[app_picker_fieldname].value+' by '+data.request.body.user.displayName+' in Jira and the subscription approval workflow'\\n  };\\n  \\n  return {url, body};\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
@@ -352,7 +352,7 @@
 				{
 					"name": "headers",
 					"type": "jsonpath",
-					"value": "$.flowResponse",
+					"value": "$.prepareJiraHeadersFlowResponse",
 					"metaName": "Headers",
 					"metaDescription": "The HTTP headers to set."
 				}
@@ -406,7 +406,7 @@
 					"routes": [
 						"javascript.5"
 					],
-					"context": "$.flowResponse",
+					"context": "$.prepareJiraHeadersFlowResponse",
 					"metaName": "Next"
 				},
 				"error": {
@@ -436,6 +436,35 @@
 						"javascript.3"
 					],
 					"context": "$.flowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
+		},
+		"invoke-flow.4": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "getJiraFields",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"getJiraFields\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.1"
+					],
+					"context": "$.getJiraFieldsFlowResponse",
 					"metaName": "Next"
 				},
 				"error": {
