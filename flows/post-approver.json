@@ -80,7 +80,7 @@
 			"outputs": {
 				"true": {
 					"routes": [
-						"javascript.2"
+						"invoke-flow.2"
 					],
 					"context": "$.equals",
 					"metaName": "True"
@@ -92,100 +92,6 @@
 				}
 			},
 			"metaMethod": "Equals"
-		},
-		"javascript.2": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
-			"name": "prepareGetToken",
-			"method": "Execute",
-			"parameters": [
-				{
-					"name": "data",
-					"type": "jsonpath",
-					"value": "$",
-					"metaName": "Data",
-					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
-				},
-				{
-					"name": "code",
-					"type": "string",
-					"value": "\"let dataToencode = data.env.CLIENT_ID+':'+data.env.CLIENT_SECRET;\\n  let buff = new Buffer(dataToencode);\\n  let encodedData = buff.toString('base64');\\n \\n  let url = 'https://login.axway.com/auth/realms/Broker/protocol/openid-connect/token';\\n  let headers = {\\n    Authorization : 'Basic '+encodedData,\\n   'Content-Type': 'application/x-www-form-urlencoded'\\n  };\\n  let body = {\\n    grant_type: 'client_credentials'\\n  };\\n \\n return {url,headers,body};\"",
-					"metaName": "Code",
-					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
-				}
-			],
-			"outputs": {
-				"next": {
-					"context": "$.result",
-					"routes": [
-						"rest.1"
-					],
-					"metaName": "Next"
-				},
-				"error": {
-					"context": "$.error",
-					"routes": [],
-					"metaName": "Error"
-				}
-			},
-			"metaMethod": "Execute"
-		},
-		"rest.1": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-restclient/rest",
-			"name": "getToken",
-			"method": "post",
-			"parameters": [
-				{
-					"name": "body",
-					"type": "jsonpath",
-					"value": "$.result.body",
-					"metaName": "Body",
-					"metaDescription": "The content to send."
-				},
-				{
-					"name": "url",
-					"type": "jsonpath",
-					"value": "$.result.url",
-					"metaName": "URL",
-					"metaDescription": "The target URL."
-				},
-				{
-					"name": "headers",
-					"type": "jsonpath",
-					"value": "$.result.headers",
-					"metaName": "Headers",
-					"metaDescription": "The HTTP headers to set."
-				}
-			],
-			"outputs": {
-				"2xx": {
-					"routes": [
-						"javascript.3"
-					],
-					"context": "$.getTokenResponse",
-					"metaName": "2XX"
-				},
-				"3xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "3XX"
-				},
-				"4xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "4XX"
-				},
-				"5xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "5XX"
-				},
-				"error": {
-					"routes": [],
-					"context": "$.error",
-					"metaName": "Error"
-				}
-			},
-			"metaMethod": "POST"
 		},
 		"javascript.3": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
@@ -202,9 +108,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let self_link = data.env.JIRA_SUBS_SELF_LINK_FIELD;\\n  let approval_comment = data.env.JIRA_SUBS_APP_COMMENT_FIELD;\\n  \\n  let url = data.request.body.issue.fields[self_link];\\n   let headers = {\\n     'Content-Type': 'application/json',\\n     Authorization: 'Bearer '+data.getTokenResponse.body.access_token\\n   };\\n  \\n  \\tlet approvalStatus = 'rejected';\\n  \\n    let approvalPicker= data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  \\tif(data.request.body.issue.fields[approvalPicker].value === 'Approve') {\\n       approvalStatus = 'approved';\\n    }\\n  \\n   let body = {\\n      \\\"approval\\\": {\\n      \\\"state\\\": approvalStatus,\\n      \\\"reason\\\": data.request.body.issue.fields[approval_comment]\\n      }\\n   };\\n   return {url,headers,body};\"",
-					"metaName": "Code",
-					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
+					"value": "\"let self_link = data.env.JIRA_SUBS_SELF_LINK_FIELD;\\n  let approval_comment = data.env.JIRA_SUBS_APP_COMMENT_FIELD;\\n  \\n  let url = data.request.body.issue.fields[self_link];\\n  \\n  let approvalStatus = 'rejected';\\n  \\n  let approvalPicker= data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  if(data.request.body.issue.fields[approvalPicker].value === 'Approve') {\\n     approvalStatus = 'approved';\\n  }\\n  \\n   let body = {\\n      \\\"approval\\\": {\\n      \\\"state\\\": approvalStatus,\\n      \\\"reason\\\": data.request.body.issue.fields[approval_comment]\\n      }\\n   };\\n   return {url,body};\""
 				}
 			],
 			"outputs": {
@@ -245,7 +149,7 @@
 				{
 					"name": "headers",
 					"type": "jsonpath",
-					"value": "$.result.headers",
+					"value": "$.flowResponse",
 					"metaName": "Headers",
 					"metaDescription": "The HTTP headers to set."
 				}
@@ -362,7 +266,7 @@
 			"outputs": {
 				"2xx": {
 					"routes": [
-						"javascript.5"
+						"invoke-flow.1"
 					],
 					"context": "$.response",
 					"metaName": "2XX"
@@ -405,7 +309,9 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let dataToencode = data.env.JIRA_USERNAME+':'+data.env.JIRA_API_TOKEN;\\n  let buff = new Buffer(dataToencode);\\n  let encodedData = buff.toString('base64');\\n  \\n  let url = data.env.JIRA_URL+'/rest/api/2/issue/'+data.request.body.issue.key+'/comment';\\n  \\n  let headers = {\\n    Authorization : 'Basic '+encodedData,\\n    'Content-Type': 'application/json'\\n  };\\n  \\n  let subs_name = data.env.JIRA_SUBS_NAME_FIELD;\\n  let subs_approval_picker = data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  let body = {\\n    body: 'Subscription \\\"'+data.request.body.issue.fields[subs_name]+'\\\" set to '+data.request.body.issue.fields[subs_approval_picker].value+' by '+data.request.body.user.displayName+' in Jira and the subscription approval workflow'\\n  };\\n  \\n  return {url, body, headers};\""
+					"value": "\"let url = data.env.JIRA_URL+'/rest/api/2/issue/'+data.request.body.issue.key+'/comment';\\n  \\n  let subs_name = data.env.JIRA_SUBS_NAME_FIELD;\\n  let subs_approval_picker = data.env.JIRA_SUBS_APP_PICKER_FIELD;\\n  \\n  let body = {\\n    body: 'Subscription \\\"'+data.request.body.issue.fields[subs_name]+'\\\" set to '+data.request.body.issue.fields[subs_approval_picker].value+' by '+data.request.body.user.displayName+' in Jira and the subscription approval workflow'\\n  };\\n  \\n  return {url, body};\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
 			],
 			"outputs": {
@@ -446,7 +352,7 @@
 				{
 					"name": "headers",
 					"type": "jsonpath",
-					"value": "$.result.headers",
+					"value": "$.flowResponse",
 					"metaName": "Headers",
 					"metaDescription": "The HTTP headers to set."
 				}
@@ -481,6 +387,64 @@
 				}
 			},
 			"metaMethod": "POST"
+		},
+		"invoke-flow.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "prepareJiraHeaders",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"prepareJiraHeaders\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.5"
+					],
+					"context": "$.flowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
+		},
+		"invoke-flow.2": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "getAmplifyAPIHeaders",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"getAmplifyAPIHeaders\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.3"
+					],
+					"context": "$.flowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
 		}
 	}
 }
