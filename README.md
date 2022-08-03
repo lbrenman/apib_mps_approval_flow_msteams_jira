@@ -17,6 +17,10 @@ Here is an overview of the overall flow/process:
 * When the approver approves or rejects the request in the Jira Incident form and closes the incident a Jira webhook triggers another API Builder API
   * This API Builder API updates the Marketplace subscription request, adds a comment to the Jira Incident and sends a message to MS Teams indicating that the subscription request was processed
 
+This is depicted in the data flow diagram below:
+
+![](https://i.imgur.com/gXcSmw1.png)
+
 The API Builder project exposes two API's:
 
 * `POST /api/amplifycentralwebhookhandler` which takes an Amplify subscription webhook as the body. This is the webhook that Amplify calls when a marketplace product subscription request is made. The swagger for this method can be found in [**this**](https://github.com/lbrenman/amplifycentralwebhookhandlerdefinition) Stoplight Github repo.
