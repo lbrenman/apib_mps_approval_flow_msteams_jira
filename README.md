@@ -6,6 +6,8 @@ This API Builder project implements the steps described [**here**](https://docs.
 
 ![](https://i.imgur.com/j0bsOcc.png)
 
+![](https://i.imgur.com/ESvTR2H.png)
+
 This project has the following features:
 
 * Notifies approver using MS Teams:
