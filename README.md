@@ -19,8 +19,8 @@ Here is an overview of the overall flow/process:
 
 The API Builder project exposes two API's:
 
-* `POST /api/amplifycentralwebhookhandler` which takes an Amplify subscription webhook as the body. This is the webhook that Amplify calls when a marketplace product subscription request is made. The swagger for this method can be found in [this](https://github.com/lbrenman/amplifycentralwebhookhandlerdefinition) Stoplight Github repo.
-* `POST /api/approver` which is called automatically when the approver select Approve or Reject button, adds a comment and closes the incident in Jira. The OpenAPI Specification document for this method can be found in [this](https://github.com/lbrenman/sl_marketplace_product_subscription_jira_approver_api_def) Stoplight Github repo.
+* `POST /api/amplifycentralwebhookhandler` which takes an Amplify subscription webhook as the body. This is the webhook that Amplify calls when a marketplace product subscription request is made. The swagger for this method can be found in [**this**](https://github.com/lbrenman/amplifycentralwebhookhandlerdefinition) Stoplight Github repo.
+* `POST /api/approver` which is called automatically when the approver select Approve or Reject button, adds a comment and closes the incident in Jira. The OpenAPI Specification document for this method can be found in [**this**](https://github.com/lbrenman/sl_marketplace_product_subscription_jira_approver_api_def) Stoplight Github repo.
 
 You need to set the following environment variables:
 
