@@ -1,4 +1,4 @@
-# Axway Marketplace Subscription Approval Request Workflow using API Builder and MS Teams
+# Axway Marketplace Subscription Approval Request Workflow using API Builder, Jira and MS Teams
 
 This API Builder project implements the steps described [**here**](https://docs.axway.com/bundle/amplify-central/page/docs/integrate_with_central/webhook/marketplace_subscription_webhook/index.html) to approve Axway Marketplace subscription approval requests. It leverages Jira to file an incident with custom fields for approval and MS Teams to notify the approval team with links to the incident, product, subscription and subscriber:
 
@@ -18,8 +18,8 @@ This project has the following features:
 
 The API Builder project exposes two API's:
 
-* `POST /api/amplifycentralwebhookhandler` which takes an Amplify subscription webhook as the body. This is the webhook that Amplify calls when a marketplace product subscription request is made.
-* `POST /api/approver` which is called automatically when the approver select Approve or Reject button, adds a comment and closes the incident in Jira.
+* `POST /api/amplifycentralwebhookhandler` which takes an Amplify subscription webhook as the body. This is the webhook that Amplify calls when a marketplace product subscription request is made. The swagger for this method can be found in [this](https://github.com/lbrenman/amplifycentralwebhookhandlerdefinition) Stoplight Github repo.
+* `POST /api/approver` which is called automatically when the approver select Approve or Reject button, adds a comment and closes the incident in Jira. The OpenAPI Specification document for this method can be found in [this](https://github.com/lbrenman/sl_marketplace_product_subscription_jira_approver_api_def) Stoplight Github repo.
 
 You need to set the following environment variables:
 
@@ -120,10 +120,10 @@ spec:
 
 The API Builder flow for `/amplifycentralwebhookhandler` is shown below:
 
-![](https://i.imgur.com/k2oFLLf.png)
+![](https://i.imgur.com/UjtPnjQ.png)
 
 The API Builder flow for `/approver` is shown below:
 
-![](https://i.imgur.com/DjSOJWp.png)
+![](https://i.imgur.com/7IXZCTD.png)
 
 The flows can both certainly be improved by handling errors and other HTTP response status codes better but it demonstrates an MVP for now.
