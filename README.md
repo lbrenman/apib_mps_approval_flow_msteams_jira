@@ -8,15 +8,14 @@ This API Builder project implements the steps described [**here**](https://docs.
 
 ![](https://i.imgur.com/ESvTR2H.png)
 
-This project has the following features:
+Here is an overview of the overall flow/process:
 
-* Notifies approver using MS Teams:
-  * Main form with links to the incident, product, subscription and subscriber when a subscription is requested
-  * Follow message when the subscription is approved/rejected
-* Leverages Jira with all the necessary details and links and provides a form to approve/reject with a comment/reason. This uses Jira custom fields. You need to set that up in your Jira instance
-* Leverages Jira webhooks to determine when the incident is closed (status = done) to approve/reject the subscription request
-* All parameters are environmentalized, including the Jira custom field names
-* A comment is added to the Jira incident to indicate that the request was approved/rejected
+* A user subscribes to a Marketplace Product
+* An Amplify Resource Webhook is fired and triggers an API Builder API
+  * The API Builder API creates a Jira Incident with all pertinent information and links and instructions to the approver
+  * The API Builder API also sends a message to MS Teams with pertinent information and a button/link to the Jira incident
+* When the approver approves or rejects the request in the Jira Incident form and closes the incident a Jira webhook triggers another API Builder API
+  * This API Builder API updates the Marketplace subscription request, adds a comment to the Jira Incident and sends a message to MS Teams indicating that the subscription request was processed
 
 The API Builder project exposes two API's:
 
