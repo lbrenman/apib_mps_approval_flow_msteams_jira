@@ -102,7 +102,7 @@
 			"outputs": {
 				"true": {
 					"routes": [
-						"javascript.4"
+						"invoke-flow.2"
 					],
 					"context": "$.equals",
 					"metaName": "True"
@@ -132,7 +132,9 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let url=data.env.MS_TEAMS_WEBHOOK_URL;\\n  \\n  let productName=data.request.body.payload.spec.product;\\n  let productUrl=data.env.API_CENTRAL_URL+'/products/details/'+data.request.body.payload.spec.product;\\n  let subscriptionName=data.request.body.payload.title;\\n  let subscriptionUrl=data.env.API_CENTRAL_URL+'/marketplace/subscriptions';\\n  let requestorName=data.getUserResponse.body.result.firstname+' '+data.getUserResponse.body.result.lastname;\\n  let requestorEmail=data.getUserResponse.body.result.email;\\n  let requestorEmailUrl='mailTo:'+data.getUserResponse.body.result.email;\\n  let selfLink = data.env.API_CENTRAL_URL+'/apis'+data.request.body.payload.metadata.selfLink+'/approval';\\n  \\n  let body = {\\n    \\\"@type\\\": \\\"MessageCard\\\",\\n    \\\"@context\\\": \\\"http://schema.org/extensions\\\",\\n    \\\"themeColor\\\": \\\"0076D7\\\",\\n    \\\"summary\\\": \\\"Marketplace Product Subscription Approval REQUESTED\\\",\\n    \\\"sections\\\": [{\\n        \\\"activityTitle\\\": \\\"Marketplace Product Subscription Approval REQUESTED\\\",\\n        \\\"activitySubtitle\\\": \\\"Please review and approve or reject the request from the Jira Incident\\\",\\n        \\\"markdown\\\": true,\\n        \\\"facts\\\": [{\\n            \\\"name\\\": \\\"Product\\\",\\n          \\t\\\"value\\\": \\\"[\\\"+productName+\\\"](\\\"+productUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Subscription\\\",\\n            \\\"value\\\": \\\"[\\\"+subscriptionName+\\\"](\\\"+subscriptionUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Requestor Name\\\",\\n            \\\"value\\\": requestorName\\n        },{\\n            \\\"name\\\": \\\"Requestor Email\\\",\\n            \\\"value\\\": \\\"[\\\"+requestorEmail+\\\"](\\\"+requestorEmailUrl+\\\")\\\"\\n        }],\\n    }],\\n    \\\"potentialAction\\\": [\\n      {\\n  \\t\\t\\t\\\"@type\\\": \\\"OpenUri\\\",\\n  \\t\\t\\t\\\"name\\\": \\\"View Incident\\\",\\n  \\t\\t\\t\\\"targets\\\": [\\n  \\t\\t\\t\\t{\\n  \\t\\t\\t\\t\\t\\\"os\\\": \\\"default\\\",\\n  \\t\\t\\t\\t\\t\\\"uri\\\": data.env.JIRA_URL+'/browse/'+data.createIncidentResponse.body.key\\n  \\t\\t\\t\\t}\\n  \\t\\t\\t]\\n  \\t\\t}\\n    ]\\n   };\\n  \\n  return {url,body};\""
+					"value": "\"let url=data.env.MS_TEAMS_WEBHOOK_URL;\\n  \\n  let productName=data.request.body.payload.spec.product;\\n  let productUrl=data.env.API_CENTRAL_URL+'/products/details/'+data.request.body.payload.spec.product;\\n  let subscriptionName=data.request.body.payload.title;\\n  let subscriptionUrl=data.env.API_CENTRAL_URL+'/marketplace/subscriptions';\\n  let requestorName=data.getUserResponse.body.result.firstname+' '+data.getUserResponse.body.result.lastname;\\n  let requestorEmail=data.getUserResponse.body.result.email;\\n  let requestorEmailUrl='mailTo:'+data.getUserResponse.body.result.email;\\n  let selfLink = data.env.API_CENTRAL_URL+'/apis'+data.request.body.payload.metadata.selfLink+'/approval';\\n  let orgName = data.getOrgResponse.body.result.name;\\n  let orgUrl = 'https://platform.axway.com/org/'+data.request.body.organization.id;\\n  let teamName = data.getTeamResponse.body.result.name;\\n  let teamUrl = 'https://platform.axway.com/org/team/'+data.request.body.payload.marketplace.resource.owner.id;\\n  \\n  let body = {\\n    \\\"@type\\\": \\\"MessageCard\\\",\\n    \\\"@context\\\": \\\"http://schema.org/extensions\\\",\\n    \\\"themeColor\\\": \\\"0076D7\\\",\\n    \\\"summary\\\": \\\"Marketplace Product Subscription Approval REQUESTED\\\",\\n    \\\"sections\\\": [{\\n        \\\"activityTitle\\\": \\\"Marketplace Product Subscription Approval REQUESTED\\\",\\n        \\\"activitySubtitle\\\": \\\"Please review and approve or reject the request from the Jira Incident\\\",\\n        \\\"markdown\\\": true,\\n        \\\"facts\\\": [{\\n            \\\"name\\\": \\\"Product\\\",\\n          \\t\\\"value\\\": \\\"[\\\"+productName+\\\"](\\\"+productUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Subscription\\\",\\n            \\\"value\\\": \\\"[\\\"+subscriptionName+\\\"](\\\"+subscriptionUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Requestor Name\\\",\\n            \\\"value\\\": requestorName\\n        },{\\n            \\\"name\\\": \\\"Requestor Email\\\",\\n            \\\"value\\\": \\\"[\\\"+requestorEmail+\\\"](\\\"+requestorEmailUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Organization\\\",\\n            \\\"value\\\": \\\"[\\\"+orgName+\\\"](\\\"+orgUrl+\\\")\\\"\\n        },{\\n            \\\"name\\\": \\\"Team\\\",\\n            \\\"value\\\": \\\"[\\\"+teamName+\\\"](\\\"+teamUrl+\\\")\\\"\\n        }],\\n    }],\\n    \\\"potentialAction\\\": [\\n      {\\n  \\t\\t\\t\\\"@type\\\": \\\"OpenUri\\\",\\n  \\t\\t\\t\\\"name\\\": \\\"View Incident\\\",\\n  \\t\\t\\t\\\"targets\\\": [\\n  \\t\\t\\t\\t{\\n  \\t\\t\\t\\t\\t\\\"os\\\": \\\"default\\\",\\n  \\t\\t\\t\\t\\t\\\"uri\\\": data.env.JIRA_URL+'/browse/'+data.createIncidentResponse.body.key\\n  \\t\\t\\t\\t}\\n  \\t\\t\\t]\\n  \\t\\t}\\n    ]\\n   };\\n  \\n  return {url,body};\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
 			],
 			"outputs": {
@@ -225,7 +227,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"let userId = data.request.body.payload.metadata.audit.createUserId;\\n  let url = 'https://platform.axway.com/api/v1/user/'+userId;\\n  let headers = {\\n    'Content-Type': 'application/json',\\n    Authorization: 'Bearer '+data.getTokenResponse.body.access_token\\n  };\\n  return {url,headers};\"",
+					"value": "\"let userId = data.request.body.payload.metadata.audit.createUserId;\\n  let url = 'https://platform.axway.com/api/v1/user/'+userId;\\n  \\n  return {url};\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
 				}
@@ -261,7 +263,7 @@
 				{
 					"name": "headers",
 					"type": "jsonpath",
-					"value": "$.result.headers",
+					"value": "$.flowResponse",
 					"metaName": "Headers",
 					"metaDescription": "The HTTP headers to set."
 				}
@@ -269,7 +271,7 @@
 			"outputs": {
 				"2xx": {
 					"routes": [
-						"javascript.5"
+						"javascript.4"
 					],
 					"context": "$.getUserResponse",
 					"metaName": "2XX"
@@ -297,100 +299,6 @@
 			},
 			"metaMethod": "GET"
 		},
-		"javascript.4": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
-			"name": "prepareGetToken",
-			"method": "Execute",
-			"parameters": [
-				{
-					"name": "code",
-					"type": "string",
-					"value": "\"let dataToencode = data.env.CLIENT_ID+':'+data.env.CLIENT_SECRET;\\n  let buff = new Buffer(dataToencode);\\n  let encodedData = buff.toString('base64');\\n  \\n  let url = 'https://login.axway.com/auth/realms/Broker/protocol/openid-connect/token';\\n  let headers = {\\n    Authorization : 'Basic '+encodedData,\\n    'Content-Type': 'application/x-www-form-urlencoded'\\n  };\\n  let body = {\\n    grant_type: 'client_credentials'\\n  };\\n  \\n  return {url,headers,body};\"",
-					"metaName": "Code",
-					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
-				},
-				{
-					"name": "data",
-					"type": "jsonpath",
-					"value": "$",
-					"metaName": "Data",
-					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
-				}
-			],
-			"outputs": {
-				"next": {
-					"context": "$.result",
-					"routes": [
-						"rest.3"
-					],
-					"metaName": "Next"
-				},
-				"error": {
-					"context": "$.error",
-					"routes": [],
-					"metaName": "Error"
-				}
-			},
-			"metaMethod": "Execute"
-		},
-		"rest.3": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-restclient/rest",
-			"name": "getToken",
-			"method": "post",
-			"parameters": [
-				{
-					"name": "body",
-					"type": "jsonpath",
-					"value": "$.result.body",
-					"metaName": "Body",
-					"metaDescription": "The content to send."
-				},
-				{
-					"name": "url",
-					"type": "jsonpath",
-					"value": "$.result.url",
-					"metaName": "URL",
-					"metaDescription": "The target URL."
-				},
-				{
-					"name": "headers",
-					"type": "jsonpath",
-					"value": "$.result.headers",
-					"metaName": "Headers",
-					"metaDescription": "The HTTP headers to set."
-				}
-			],
-			"outputs": {
-				"2xx": {
-					"routes": [
-						"javascript.3"
-					],
-					"context": "$.getTokenResponse",
-					"metaName": "2XX"
-				},
-				"3xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "3XX"
-				},
-				"4xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "4XX"
-				},
-				"5xx": {
-					"routes": [],
-					"context": "$.response",
-					"metaName": "5XX"
-				},
-				"error": {
-					"routes": [],
-					"context": "$.error",
-					"metaName": "Error"
-				}
-			},
-			"metaMethod": "POST"
-		},
 		"javascript.5": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
 			"name": "prepareCreateIncident",
@@ -406,9 +314,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"// customfield_10050 = Jira custom field 'Subscription Self Link'\\n  // customfield_10052 = Jira custom field 'Subscription Name'\\n  \\n  let productName=data.request.body.payload.spec.product;\\n  let productUrl=data.env.API_CENTRAL_URL+'/products/details/'+data.request.body.payload.spec.product;\\n  let subscriptionName=data.request.body.payload.title;\\n  let subscriptionUrl=data.env.API_CENTRAL_URL+'/marketplace/subscriptions';\\n  let requestorName=data.getUserResponse.body.result.firstname+' '+data.getUserResponse.body.result.lastname;\\n  let requestorEmail=data.getUserResponse.body.result.email;\\n  let requestorEmailUrl='mailTo:'+data.getUserResponse.body.result.email;\\n  let selfLink = data.env.API_CENTRAL_URL+'/apis'+data.request.body.payload.metadata.selfLink+'/approval';\\n  \\n  let dataToencode = data.env.JIRA_USERNAME+':'+data.env.JIRA_API_TOKEN;\\n  let buff = new Buffer(dataToencode);\\n  let encodedData = buff.toString('base64');\\n  \\n  let url = data.env.JIRA_URL+'/rest/api/2/issue';\\n  \\n  let headers = {\\n    Authorization : 'Basic '+encodedData,\\n    'Content-Type': 'application/json'\\n  };\\n  \\n  let description = 'A marketplace product subscription request has been made. Details are below:'+'\\\\r'+'\\\\r';\\n  description += 'Subscription: '+subscriptionName+'\\\\r';\\n  description += 'Subscription Link: '+subscriptionUrl+'\\\\r';\\n  description += 'Product: '+productName+'\\\\r';\\n  description += 'Product Link: '+productUrl+'\\\\r';\\n  description += 'Requestor: '+requestorName+'\\\\r';\\n  description += 'Requestor E-mail: '+requestorEmail+'\\\\r';\\n  description += '\\\\r';\\n  description += \\\"In order to approve or reject the subscription request, set the Approve/Reject field, add a comment/reason and close the incident.\\\\r\\\\r\\\";\\n  description += \\\"You can review the susbscription request here:\\\\n\\\"+subscriptionUrl+\\\"\\\\n\\\\n\\\";\\n  \\n  let body = {\\n    \\\"fields\\\": {\\n      \\\"summary\\\": \\\"Marketplace product subscription approval request: \\\"+subscriptionName,\\n      \\\"issuetype\\\": {\\n        \\\"name\\\": \\\"Demand\\\"\\n      },\\n      \\\"project\\\": {\\n        \\\"key\\\": data.env.JIRA_PROJECT_KEY\\n      },\\n      \\\"description\\\": description,\\n      \\\"customfield_10050\\\": selfLink,\\n      \\\"customfield_10052\\\": subscriptionName\\n    }\\n  };\\n  \\n  return {url, headers, body};\"",
-					"metaName": "Code",
-					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
+					"value": "\"let productName=data.request.body.payload.spec.product;\\n  let productUrl=data.env.API_CENTRAL_URL+'/products/details/'+data.request.body.payload.spec.product;\\n  let subscriptionName=data.request.body.payload.title;\\n  let subscriptionUrl=data.env.API_CENTRAL_URL+'/marketplace/subscriptions';\\n  let requestorName=data.getUserResponse.body.result.firstname+' '+data.getUserResponse.body.result.lastname;\\n  let requestorEmail=data.getUserResponse.body.result.email;\\n  let requestorEmailUrl='mailTo:'+data.getUserResponse.body.result.email;\\n  let selfLink = data.env.API_CENTRAL_URL+'/apis'+data.request.body.payload.metadata.selfLink+'/approval';\\n  let orgName = data.getOrgResponse.body.result.name;\\n  let orgUrl = 'https://platform.axway.com/org/'+data.request.body.organization.id;\\n  let teamName = data.getTeamResponse.body.result.name;\\n  let teamUrl = 'https://platform.axway.com/org/team/'+data.request.body.payload.marketplace.resource.owner.id;\\n  \\n  let url = data.env.JIRA_URL+'/rest/api/2/issue';\\n  \\n  // Jira custom fields\\n  let self_link_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_SELF_LINK_FIELD_NAME).key;\\n  let subs_name_fieldname = data.getJiraFieldsFlowResponse.find(c => c.name === data.env.JIRA_SUBS_NAME_FIELD_NAME).key;\\n  \\n  let description = 'A marketplace product subscription request has been made. Details are below:'+'\\\\r'+'\\\\r';\\n  description += 'Subscription: '+subscriptionName+'\\\\r';\\n  description += 'Subscription Link: '+subscriptionUrl+'\\\\r';\\n  description += 'Product: '+productName+'\\\\r';\\n  description += 'Product Link: '+productUrl+'\\\\r';\\n  description += 'Requestor: '+requestorName+'\\\\r';\\n  description += 'Requestor E-mail: '+requestorEmail+'\\\\r';\\n  description += 'Organization: '+orgName+'\\\\r';\\n  description += 'Organization Link: '+orgUrl+'\\\\r';\\n  description += 'Team: '+teamName+'\\\\r';\\n  description += 'Team Link: '+teamUrl+'\\\\r';\\n  description += '\\\\r';\\n  description += \\\"In order to approve or reject the subscription request, set the Approve/Reject field, add a comment/reason and close the incident.\\\\r\\\\r\\\";\\n  description += \\\"You can review the susbscription request here:\\\\n\\\"+subscriptionUrl+\\\"\\\\n\\\\n\\\";\\n  \\n  let body = {\\n    \\\"fields\\\": {\\n      \\\"summary\\\": \\\"Marketplace product subscription approval request: \\\"+subscriptionName,\\n      \\\"issuetype\\\": {\\n        \\\"name\\\": data.env.JIRA_ISSUE_TYPE\\n      },\\n      \\\"project\\\": {\\n        \\\"key\\\": data.env.JIRA_PROJECT_KEY\\n      },\\n      \\\"description\\\": description\\n    }\\n  };\\n  \\n  body.fields[self_link_fieldname] = selfLink;\\n  body.fields[subs_name_fieldname] = subscriptionName;\\n  \\n  return {url, body};\""
 				}
 			],
 			"outputs": {
@@ -449,7 +355,7 @@
 				{
 					"name": "headers",
 					"type": "jsonpath",
-					"value": "$.result.headers",
+					"value": "$.prepareJiraHeadersFlowResponse",
 					"metaName": "Headers",
 					"metaDescription": "The HTTP headers to set."
 				}
@@ -484,6 +390,267 @@
 				}
 			},
 			"metaMethod": "POST"
+		},
+		"invoke-flow.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "prepareJiraHeaders",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"prepareJiraHeaders\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"invoke-flow.3"
+					],
+					"context": "$.prepareJiraHeadersFlowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
+		},
+		"invoke-flow.2": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "getAmplifyAPIHeaders",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"getAmplifyAPIHeaders\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.3"
+					],
+					"context": "$.flowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
+		},
+		"javascript.4": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "prepareGetOrg",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"let orgId = data.request.body.organization.id;\\n  let url = 'https://platform.axway.com/api/v1/org/'+orgId;\\n  \\n  return {url};\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.result",
+					"routes": [
+						"rest.3"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		},
+		"rest.3": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-restclient/rest",
+			"name": "getOrg",
+			"method": "get",
+			"parameters": [
+				{
+					"name": "url",
+					"type": "jsonpath",
+					"value": "$.result.url",
+					"metaName": "URL",
+					"metaDescription": "The target URL."
+				},
+				{
+					"name": "headers",
+					"type": "jsonpath",
+					"value": "$.flowResponse",
+					"metaName": "Headers",
+					"metaDescription": "The HTTP headers to set."
+				}
+			],
+			"outputs": {
+				"2xx": {
+					"routes": [
+						"javascript.6"
+					],
+					"context": "$.getOrgResponse",
+					"metaName": "2XX"
+				},
+				"3xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "3XX"
+				},
+				"4xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "4XX"
+				},
+				"5xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "5XX"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "GET"
+		},
+		"javascript.6": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "prepareGetTeam",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"let teamId = data.request.body.payload.marketplace.resource.owner.id;\\n  let url = 'https://platform.axway.com/api/v1/team/'+teamId;\\n  \\n  return {url};\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/api-builder/page/docs/developer_guide/flows/flow_nodes/javascript_flow_node/index.html"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.result",
+					"routes": [
+						"rest.5"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		},
+		"rest.5": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-restclient/rest",
+			"name": "getTeam",
+			"method": "get",
+			"parameters": [
+				{
+					"name": "url",
+					"type": "jsonpath",
+					"value": "$.result.url",
+					"metaName": "URL",
+					"metaDescription": "The target URL."
+				},
+				{
+					"name": "headers",
+					"type": "jsonpath",
+					"value": "$.flowResponse",
+					"metaName": "Headers",
+					"metaDescription": "The HTTP headers to set."
+				}
+			],
+			"outputs": {
+				"2xx": {
+					"routes": [
+						"invoke-flow.1"
+					],
+					"context": "$.getTeamResponse",
+					"metaName": "2XX"
+				},
+				"3xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "3XX"
+				},
+				"4xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "4XX"
+				},
+				"5xx": {
+					"routes": [],
+					"context": "$.response",
+					"metaName": "5XX"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "GET"
+		},
+		"invoke-flow.3": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "getJiraFields",
+			"method": "invokeFlow",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"getJiraFields\"",
+					"metaName": "Flow Listener ID",
+					"metaDescription": "The ID of a previously configured `Flow Listener`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.5"
+					],
+					"context": "$.getJiraFieldsFlowResponse",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Invoke Flow"
 		}
 	}
 }
